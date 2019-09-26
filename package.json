@@ -1,0 +1,23 @@
+{
+  "name": "Performance_Monitor",
+  "version": "1.0.0",
+  "description": "Socket.io, React, Mongoose, Redis, Express, and Cluster를 이용한 Performance Monitor 구현",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jos50275266/Performance_Monitor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jos50275266/Performance_Monitor/issues"
+  },
+  "homepage": "https://github.com/jos50275266/Performance_Monitor#readme",
+  "dependencies": {
+    "nodemon": "^1.19.2"
+  }
+}
