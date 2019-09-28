@@ -8,7 +8,33 @@ const io = require("socket.io-client");
 const socket = io("http://127.0.0.1:8181");
 
 socket.on("connect", () => {
-  console.log("I connected to the socekt server.. hooray!");
+  // console.log("I connected to the socekt server.. hooray!");
+  // We need a way to identify this machine to whoever concerned
+  // os.networkInterfaces의 경우 one big object를 return 하는데 이떄 internal은 true인 것은 모두
+  // MAC address가 00:00:00:00:00:00 local 이기 때문에 걸러줘야한다 왜냐하면 unique 값이 아니기 때문이다.
+  // internal: true 가 아닌 경우 오직 첫번째 요소만 신경쓰면된다. 나머지는 동일하기때문엗
+  const nI = os.networkInterfaces();
+  let macA;
+  // loop through all the nI for this machine and find a non-internal one
+  for (let key in nI) {
+    if (!nI[key][0].internal) {
+      macA = nI[key][0].mac;
+      break;
+    }
+  }
+
+  //   client auth with single key value
+  socket.emit("clientAuth", "5afkopskfpefkpo3123");
+
+  //   Start sending over data on interval
+  let perfDataInterval = setInterval(() => {
+    performanceData().then(allPerformanceData => {
+      //   console.log(allPerformanceData);
+      // This will get the clock ticking where everyone second we will send over to this place
+      // which is where our socket.io server is listening
+      socket.emit("perfData", allPerformanceData);
+    });
+  }, 1000);
 });
 
 function performanceData() {
@@ -102,7 +128,3 @@ function getCpuLoad() {
     }, 100);
   });
 }
-
-performanceData().then(allPerformanceData => {
-  console.log(allPerformanceData);
-});
