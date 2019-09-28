@@ -73,3 +73,5 @@ socket.io-redis
 - 1. We're going to have our node clients
 - 2. We're going to have our socket.io server we're going to breack that up into a cluster so we'll have the main program(Master Node)
 - 3. We'll have the redis server which will allow all of the sockets to maintain normal communication
+
+// https://blog.doosikbae.com/92
