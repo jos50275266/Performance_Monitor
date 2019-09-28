@@ -26,6 +26,13 @@ socket.on("connect", () => {
   //   client auth with single key value
   socket.emit("clientAuth", "5afkopskfpefkpo3123");
 
+  performanceData().then(allPerformanceData => {
+    // 처음 들어온 PerformanceData를 DB에 저장하기위해 보내준다.
+    // JavaScript은 setInterval에 따로 초기화 하는 기능이 없어서 두 번 반복해야하낟.
+    allPerformanceData.macA = macA;
+    socket.emit("initPerfData", allPerformanceData);
+  });
+
   //   Start sending over data on interval
   let perfDataInterval = setInterval(() => {
     performanceData().then(allPerformanceData => {
@@ -35,6 +42,10 @@ socket.on("connect", () => {
       socket.emit("perfData", allPerformanceData);
     });
   }, 1000);
+
+  socket.on("disconnect", () => {
+    clearInterval(perfDataInterval);
+  });
 });
 
 function performanceData() {

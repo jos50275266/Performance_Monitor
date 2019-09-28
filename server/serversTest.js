@@ -87,4 +87,7 @@ if (cluster.isMaster) {
 10. else 의 경우 io.on("connection") 에서 cluster의 worker.id를 출력
 11. Worker rnumber is dependent on your IP Address    
 12. farmhash는 always returns an exact same result
+https://victorydntmd.tistory.com/249
+https://github.com/sayar/RedisMVA/blob/master/module6_redis_pubsub/README.md
+https://github.com/rajaraodv/redispubsub
 */
