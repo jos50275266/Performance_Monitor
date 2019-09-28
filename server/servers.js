@@ -64,15 +64,16 @@ if (cluster.isMaster) {
     // We received a connection and need to pass it to the appropriate
     // worker. Get the worker for this connection's source IP and pass
     // it the connection.
-
+    // console.log("dsds", connection.remoteAddress);
     let worker = workers[worker_index(connection.remoteAddress, num_processes)];
     // Whatever brought it here will get to the right worker and then of course we listen
     // to the port at the bottom.
     worker.send("sticky-session:connection", connection);
   });
 
-  server.listen(port);
-  console.log(`Master listening on port ${port}`);
+  server.listen(port, () => {
+    console.log(`Master Listening on podsdrt ${port}`);
+  });
 } else {
   // Note we don't use a port here because the master listens on it for us.
   let app = express();

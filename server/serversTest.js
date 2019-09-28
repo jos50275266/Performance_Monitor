@@ -38,13 +38,13 @@ if (cluster.isMaster) {
   };
 
   const server = net.createServer({ pauseOnConnect: true }, connection => {
-
     let worker = workers[worker_index(connection.remoteAddress, num_processes)];
     worker.send("sticky-session:connection", connection);
   });
 
-  server.listen(port);
-  console.log(`Master listening on port ${port}`);
+  server.listen(port, () => {
+    console.log(`Master Listening on podsdrt ${port}`);
+  });
 } else {
   // Note we don't use a port here because the master listens on it for us.
   let app = express();
@@ -55,7 +55,7 @@ if (cluster.isMaster) {
   // console.log("Worker listening...");
   const io = socketio(server);
 
- io.adapter(io_redis({ host: "localhost", port: 6379 }));
+  io.adapter(io_redis({ host: "localhost", port: 6379 }));
 
   io.on("connection", function(socket) {
     socketMain(io, socket);
@@ -73,3 +73,18 @@ if (cluster.isMaster) {
     connection.resume();
   });
 }
+
+/* 정리
+1. Cluster Module은 master를 가지고있고, 역할은 어떤 worker가 어디로 가야하는지 알려준다.
+2. Worker는 모든 밸런스와 연결(Conection)을 확실히 하기위해 Adapter를 이용해 Redis를 사용한다. 
+3. else 이후로, io.on('connection') 을 하고, nodeClient의 index 파일에서 또한 io.on('connect)를 한다.
+4. index 파일의 socket은 우리의 socket.io server에 connection을 요청한다.
+5. Redis Server를 키고
+6. node index.js 를 하고
+7. node servers.js 를 하면
+8. index에서  servers.js의 socket.io server에 대해 socket.on("connect") event 가 실행된다.
+9. servers 에서 io.on("connection") 이벤트를 들음으로써 socketMain 함수가 실행된다.
+10. else 의 경우 io.on("connection") 에서 cluster의 worker.id를 출력
+11. Worker rnumber is dependent on your IP Address    
+12. farmhash는 always returns an exact same result.
+*/
