@@ -86,5 +86,5 @@ if (cluster.isMaster) {
 9. servers 에서 io.on("connection") 이벤트를 들음으로써 socketMain 함수가 실행된다.
 10. else 의 경우 io.on("connection") 에서 cluster의 worker.id를 출력
 11. Worker rnumber is dependent on your IP Address    
-12. farmhash는 always returns an exact same result.
+12. farmhash는 always returns an exact same result
 */
